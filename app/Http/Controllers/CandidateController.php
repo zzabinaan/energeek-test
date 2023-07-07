@@ -43,11 +43,11 @@ class CandidateController extends Controller
         }
 
         $validData = $validator->validated();
-
+        $validData['skill_ids'] = array_values(array_unique($validData['skill_ids']));
+        
         try {
             $data = Candidate::create($validData);
-
-            foreach ($request->skill_ids as $skill){
+            foreach ($validData['skill_ids'] as $skill){
                SkillSet::create([
                     'candidate_id' => $data->id,
                     'skill_id' => $skill
